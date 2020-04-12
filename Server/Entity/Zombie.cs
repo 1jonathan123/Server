@@ -15,11 +15,12 @@ namespace Server.Entity
         LinkedList<Vector> path;
         Vector closest;
 
-        public Zombie(Thing body, string name, Weapon primary, double minimumDistance, int maxHp, int bounty)
+        public Zombie(Thing body, string name, Weapon primary, double maximumDistance,
+            double minimumDistance, int maxHp, int bounty)
             : base(body, name, maxHp, new Bag(), bounty, 0)
         {
             bag.Primary = primary;
-            navigator = new Navigator(minimumDistance);
+            navigator = new Navigator(maximumDistance, minimumDistance);
         }
 
         public override void Interact(Agent enemy)
@@ -36,11 +37,16 @@ namespace Server.Entity
 
             if (closest != null)
             {
-                if ((body.position - closest).Length > navigator.MinimumDistance 
-                    || !map.ClearSight(body.position, closest))
+                if ((body.position - closest).Length > navigator.MaximumDistance ||
+                    !map.ClearSight(body.position, closest))
                     Move(map);
                 else
+                {
+                    if ((body.position - closest).Length > (navigator.MaximumDistance + navigator.MinimumDistance) / 2)
+                        Move(map);
+
                     Attack();
+                }
             }
 
             closest = null;
@@ -52,7 +58,8 @@ namespace Server.Entity
         {
             if (!navigator.Navigating)
             {
-                if (path == null || (path.Count == 0 && (body.position - closest).Length > 100))
+                if (path == null || (path.Count == 0 && (body.position - closest).Length > navigator.MinimumDistance)
+                    || (path.Count > 0 && !map.ClearSight(body.position, path.First.Value)) || (navigator.Target - closest).Length > 100)
                 {
                     navigator.StartNavigation(body.position, closest, map);
 
@@ -65,20 +72,29 @@ namespace Server.Entity
 
             if (path != null && path.Count > 0)
             {
+                while (path.Count > 1)
+                {
+                    if (map.ClearSight(path.First.Next.Value, body.position))
+                        path.RemoveFirst();
+                    else
+                        break;
+                }
+
+
                 Vector target = path.First.Value;
 
-                Vector movement = (target - body.position).Normal;
+                Vector movement = target - body.position;
 
-                if (movement.y < -1.0 / 3)
+                if (movement.y < -2)
                     agentActions.KeyDown(Constants.North);
 
-                if (movement.y > 1.0 / 3)
+                if (movement.y > 2)
                     agentActions.KeyDown(Constants.South);
 
-                if (movement.x < -1.0 / 3)
+                if (movement.x < -2)
                     agentActions.KeyDown(Constants.West);
 
-                if (movement.x > 1.0 / 3)
+                if (movement.x > 2)
                     agentActions.KeyDown(Constants.East);
 
                 if ((body.position - target).Length < 5)
@@ -115,13 +131,13 @@ namespace Server.Entity
             switch (type)
             {
                 case "knife":
-                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Knife, 60, 100, 10);
+                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Knife, 60, 0, 100, 10);
 
                 case "gun":
-                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Gun, 500, 100, 10);
+                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Gun, 500, 200, 100, 10);
             }
 
-            throw new Exception("Unknown zombie type!!!");
+            throw new Exception("Unknown zombie type");
         }
     }
 }

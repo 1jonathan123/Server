@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Server.Tangible;
 
-namespace Server.Arsenal
+namespace Server.Arsenal.Bullets
 {
     class MagicBulletData : IBulletData
     {

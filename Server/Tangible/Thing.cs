@@ -7,7 +7,7 @@ namespace Server.Tangible
     /*
      * thing is an instance of a specific model
     */
-    class Thing
+    class Thing : IClashAble
     {
         public string modelID;
         public Vector position;
@@ -20,9 +20,18 @@ namespace Server.Tangible
             this.angle = angle;
         }
 
-        public double Clash(Thing another, Vector movement)
+        public double Clash(IClashAble another, Vector movement)
         {
-            return Model.models[modelID].Clash(position, angle, Model.models[another.modelID], another.position, another.angle, movement);
+            switch (another)
+            {
+                case Thing thing:
+                    return Model.models[modelID].Clash(position, angle, Model.models[thing.modelID], thing.position, thing.angle, movement);
+
+                case Rect rect:
+                    return Model.models[modelID].Clash(position, angle, rect, movement);
+            }
+
+            throw new Exception("Type error");
         }
 
         public void GetBytes(Contact.Bytes b, Vector POV)
@@ -35,5 +44,9 @@ namespace Server.Tangible
             b.Add(position - POV);
             b.Add(angle);
         }
+
+        public double BoundRadius { get { return Model.models[modelID].BoundRadius; } }
+
+        public Vector Position { get { return position; } }
     }
 }

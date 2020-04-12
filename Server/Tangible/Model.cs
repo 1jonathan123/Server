@@ -6,7 +6,7 @@ namespace Server.Tangible
 {
     class Model
     {
-        List<Rect> rects;
+        List<IShape> shapes;
 
         public static Dictionary<string, Model> models;
         public static Dictionary<string, int> order;
@@ -31,20 +31,20 @@ namespace Server.Tangible
 
         public Model()
         {
-            rects = new List<Rect>();
+            shapes = new List<IShape>();
         }
 
-        public void AddRect(Rect rect)
+        public void AddIShape(IShape shape)
         {
-            rects.Add(rect);
+            shapes.Add(shape);
         }
 
         public void GetBytes(Contact.Bytes bytes)
         {
-            bytes.Add(rects.Count);
+            bytes.Add(shapes.Count);
 
-            foreach (Rect rect in rects)
-                rect.GetBytes(bytes);
+            foreach (IShape shape in shapes)
+                shape.GetBytes(bytes);
         }
 
         public double Clash(Vector position1, double angle1, Model another, Vector position2, double angle2, Vector movement)
@@ -53,21 +53,21 @@ namespace Server.Tangible
 
             double min = 1;
 
-            foreach (Rect rect1 in rects)
-                foreach (Rect rect2 in another.rects)
-                    min = Math.Min(min, rect1.RotateAndMove(position1, angle1).Clash(rect2.RotateAndMove(position2, angle2), movement));
+            foreach (IShape shape1 in shapes)
+                foreach (IShape shape2 in another.shapes)
+                    min = Math.Min(min, shape1.RotateAround(position1, angle1).Clash(shape2.RotateAround(position2, angle2), movement));
 
             return min;
         }
 
-        public double Clash(Vector position, double angle, Rect another, Vector movement)
+        public double Clash(Vector position, double angle, IShape another, Vector movement)
         {
             //TOCHANGE: use bounds
 
             double min = 1;
 
-            foreach (Rect rect in rects)
-                    min = Math.Min(min, rect.RotateAndMove(position, angle).Clash(another, movement));
+            foreach (IShape shape in shapes)
+                min = Math.Min(min, shape.RotateAround(position, angle).Clash(another, movement));
 
             return min;
         }
@@ -76,16 +76,16 @@ namespace Server.Tangible
         {
             boundRadius = 0;
 
-            foreach (Rect rect in rects)
-                foreach (Vector point in rect.Points)
-                    boundRadius = Math.Max(boundRadius, point.Length);
+            foreach (IShape shape in shapes)
+                if (shape.Solid)
+                    boundRadius = Math.Max(boundRadius, shape.BoundRadius);
 
             boundRadius += Constants.Epsilon1;
         }
 
-        public void Add(Rect rect)
+        public void Add(IShape shape)
         {
-            rects.Add(rect);
+            shapes.Add(shape);
         }
 
         public double BoundRadius { get { return boundRadius; } }
@@ -96,7 +96,7 @@ namespace Server.Tangible
             {
                 modelsBytes = new Contact.Bytes();
 
-                foreach (KeyValuePair<string, Model> kvp in Model.models)
+                foreach (KeyValuePair<string, Model> kvp in models)
                     kvp.Value.GetBytes(modelsBytes);
             }
 

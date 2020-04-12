@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Server.Tangible;
+using Server.Arsenal.Bullets;
 
 namespace Server.Arsenal
 {
@@ -58,7 +59,7 @@ namespace Server.Arsenal
         {
             get
             {
-                return new Weapon(new LongBulletData(new Vector(60, 5), "red", 1, 0.5, -2), 1, "Knife");
+                return new Weapon(new LongBulletData(new Vector(60, 5), "red", 1, 0.5, -1), 1, "Knife");
             }
         }
 
@@ -86,7 +87,7 @@ namespace Server.Arsenal
                         return new Weapon(new SimpleBulletData("smallRedBullet", 600, 5, 1.5, 5, true), 5, "Machine Gun");
 
                     case 3:
-                        return new Weapon(new LongBulletData(new Vector(1200, 5), "#000080", 15, 2.5, 2), 100, "Sniper");
+                        return new Weapon(new LongBulletData(new Vector(1200, 5), "#000080", 10, 2, 2), 100, "Sniper");
 
                     case 4:
                         return new Weapon(new SimpleBulletData("bigBlackBullet", 2000, 4, 99, 100, true), 200, "RPG");

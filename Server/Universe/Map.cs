@@ -18,27 +18,27 @@ namespace Server.Universe
                     blocks[i, j].body = new Thing(blocks[i, j].ModelID, ToBlockPosition(i, j));
         }
 
-        public double Clash(Rect rect, Vector movement)
+        public double Clash(IClashAble clashAble, Vector movement)
         {
-            double bound = Math.Max(rect.size.x, rect.size.y) / 2;
+            double bound = clashAble.BoundRadius;
 
-            Vector checkFrom = FromBlockPosition(new Vector(rect.position.x - bound + Math.Min(0, movement.x),
-                rect.position.y - bound + Math.Min(0, movement.y)));
+            Vector checkFrom = FromBlockPosition(new Vector(clashAble.Position.x - bound + Math.Min(0, movement.x),
+                clashAble.Position.y - bound + Math.Min(0, movement.y)));
 
-            Vector checkTo = FromBlockPosition(new Vector(rect.position.x + bound + Math.Max(0, movement.x),
-                rect.position.y + bound + Math.Max(0, movement.y)));
+            Vector checkTo = FromBlockPosition(new Vector(clashAble.Position.x + bound + Math.Max(0, movement.x),
+                clashAble.Position.y + bound + Math.Max(0, movement.y)));
 
             double min = 1;
 
             for (int i = (int)Math.Max(0, checkFrom.y); i < Math.Min(blocks.GetLength(0), checkTo.y); ++i)
                 for (int j = (int)Math.Max(0, checkFrom.x); j < Math.Min(blocks.GetLength(1), checkTo.x); ++j)
                     if (blocks[i, j].Solid)
-                        min = Math.Min(min, rect.Clash(blocks[i, j].body, movement));
+                        min = Math.Min(min, clashAble.Clash(blocks[i, j].body, movement));
 
             return min;
         }
 
-        public double Clash(Thing obj, Vector movement)
+        /*public double Clash(Thing obj, Vector movement)
         {
             double bound = Model.models[obj.modelID].BoundRadius;
 
@@ -56,7 +56,7 @@ namespace Server.Universe
                         min = Math.Min(min, obj.Clash(blocks[i, j].body, movement));
 
             return min;
-        }
+        }*/
 
         public void Print(Screen screen, Vector POV)
         {

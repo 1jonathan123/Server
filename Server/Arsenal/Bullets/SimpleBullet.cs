@@ -4,7 +4,7 @@ using System.Text;
 
 using Server.Tangible;
 
-namespace Server.Arsenal
+namespace Server.Arsenal.Bullets
 {
     class SimpleBulletData : IBulletData
     {

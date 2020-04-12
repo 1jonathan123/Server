@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//from https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
 using Priority_Queue;
+
 using Server.Tangible;
 
 namespace Server.Entity
@@ -17,20 +19,17 @@ namespace Server.Entity
         SimplePriorityQueue<Vector> queue;
         Dictionary<Vector, Tuple<Vector, double, double>> values;
         Universe.Map map;
+        double maximumDistance;
         double minimumDistance;
 
         static Vector[] directions = { new Vector(1, 0), new Vector(-1, 0),
             new Vector(0, 1), new Vector(0, -1), new Vector(1, 1), new Vector(-1, 1), 
             new Vector(1, -1), new Vector(-1, -1) };
 
-        public Navigator(double minimumDistance)
+        public Navigator(double maximumDistance, double minimumDistance)
         {
+            this.maximumDistance = maximumDistance;
             this.minimumDistance = minimumDistance;
-        }
-
-        public double ManhattanDistance(Vector a, Vector b)
-        {
-            return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
         }
 
         public void StartNavigation(Vector start, Vector target, Universe.Map map)
@@ -45,7 +44,7 @@ namespace Server.Entity
 
             best = start;
 
-            values[start] = new Tuple<Vector, double, double>(null, 0, (float)ManhattanDistance(start, target));
+            values[start] = new Tuple<Vector, double, double>(null, 0, (float)(start - target).Length);
 
             queue.Enqueue(start, (float)values[start].Item3);
 
@@ -59,23 +58,21 @@ namespace Server.Entity
             {
                 Vector next = queue.Dequeue();
 
-                if (values[next].Item3 < ManhattanDistance(best, target))
+                if (values[next].Item3 < (best - target).Length)
                     best = next;
 
                 if (values[next].Item1 != null)
                 {
                     Vector position = map.ToBlockPosition(values[next].Item1);
 
-                    if ((position - targetPosition).Length <= minimumDistance
+                    if ((position - targetPosition).Length <= (maximumDistance + minimumDistance) / 2
                         && map.Clash(new Rect(position, new Vector(10, 10)), targetPosition - position) > 1 - Constants.Epsilon2)
                         return GetList(next);
                 }
 
-                /*if (values[next].Item3 == 0)
-                    return GetList(next);*/
-
                 foreach (Vector direction in directions)
-                    if (!map[next + direction].Solid && !values.ContainsKey(next + direction))
+                    if (!map[next + direction].Solid && !map[next + direction.Just(0)].Solid && !map[next + direction.Just(1)].Solid && 
+                        !values.ContainsKey(next + direction))
                         Enqueue(next + direction, next);
             }
 
@@ -86,7 +83,7 @@ namespace Server.Entity
         {
             LinkedList<Vector> path = new LinkedList<Vector>();
             for (Vector t = start; t != null; t = values[t].Item1)
-                path.AddFirst(map.ToBlockPosition(t + new Vector(0.5, 0.5)));
+                path.AddFirst(map.ToBlockPosition(t));
 
             queue = new SimplePriorityQueue<Vector>();
             values = new Dictionary<Vector, Tuple<Vector, double, double>>(500);
@@ -94,15 +91,33 @@ namespace Server.Entity
             return path;
         }
 
+        double Heuristic(Vector v)
+        {
+            double distance = (v - target).Length * Constants.BlockSize;
+
+            if (distance > maximumDistance)
+                return distance - maximumDistance;
+
+            if(distance > minimumDistance)
+                return distance - (maximumDistance + minimumDistance) / 2;
+
+            return minimumDistance - distance;
+        }
+
         void Enqueue(Vector v, Vector father)
         {
-            Tuple<Vector, double, double> t = new Tuple<Vector, double, double>(father, values[father].Item2 + 1, ManhattanDistance(v, target));
+            Tuple<Vector, double, double> t = new Tuple<Vector, double, double>
+                (father, values[father].Item2 + 1, Heuristic(v));
             queue.Enqueue(v, (float)(t.Item2 + t.Item3));
             values[v] = t;
         }
 
         public bool Navigating { get { return values != null && values.Count > 0; } }
 
+        public double MaximumDistance { get { return maximumDistance; } }
+
         public double MinimumDistance { get { return minimumDistance; } }
+
+        public Vector Target { get { return targetPosition; } }
     }
 }

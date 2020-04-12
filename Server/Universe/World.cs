@@ -5,6 +5,10 @@ using Server.Entity;
 
 namespace Server.Universe
 {
+    /*
+     * every game mod is type of world
+     */
+
     abstract class World
     {
         protected Map map;

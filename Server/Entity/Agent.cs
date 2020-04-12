@@ -57,7 +57,7 @@ namespace Server.Entity
             if (agentActions['Q'] == State.FirstTimeDown)
                 bag.Swap();
 
-            Vector currentKB = knockBack / 10;
+            Vector currentKB = knockBack / 20;
 
             double t = body.angle;
 

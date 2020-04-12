@@ -60,6 +60,8 @@
     <Compile Include="Priotiry_Queue\StablePriorityQueueNode.cs" />
     <Compile Include="Arsenal\Armor.cs" />
     <Compile Include="Arsenal\Bag.cs" />
+    <Compile Include="Tangible\IClashAble.cs" />
+    <Compile Include="Tangible\IShape.cs" />
     <Compile Include="Universe\Block.cs" />
     <Compile Include="Arsenal\IBullet.cs" />
     <Compile Include="Arsenal\IBulletData.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Run\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tangible\Rect.cs" />
+    <Compile Include="Universe\Mods\Apocalypse.cs" />
     <Compile Include="Universe\Screen.cs" />
     <Compile Include="Contact\Server.cs" />
     <Compile Include="Universe\Mods\SimpleWorld.cs" />

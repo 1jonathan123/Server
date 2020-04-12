@@ -6,17 +6,17 @@ using Server.Entity;
 using Server.Tangible;
 using Server.Arsenal;
 
-namespace Server.Universe
+namespace Server.Universe.Mods
 {
     class SimpleWorld : World
     {
         public SimpleWorld(string data) : base(data, new Map(Data.DataReader.ReadMap(
-            Constants.MapsDirectory + "/mediumMap.txt", Constants.BlocksDirectory)))
+            Constants.MapsDirectory + "/smallMap.txt", Constants.BlocksDirectory)))
         {
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < 1; ++i)
                 teams.Add(Zombie.GetZombie("gun", new Vector((2 * i - 1) * 100, rnd.Next(-200, 200))), "#zombies" + i);
 
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < 1; ++i)
                 teams.Add(Zombie.GetZombie("knife", new Vector((2 * i - 1) * 100, rnd.Next(-200, 200))), "#zombies" + (i + 2));
         }
 
@@ -46,8 +46,8 @@ namespace Server.Universe
                 if (player.AgentState['3'] == State.FirstTimeDown && player.money >= 30)
                 {
                     player.money -= 30;
-                    player.Bag.Launcher.Launch(new Grenade(player.POV, player.LookTo, new GrenadeData("bigRedRect", 800, 8,
-                        50, new SimpleBulletData("smallRedRect", 500, 5, 20, 20, true)), map));
+                    player.Bag.Launcher.Launch(new Arsenal.Bullets.Grenade(player.POV, player.LookTo, new Arsenal.Bullets.GrenadeData("bigRedRect", 800, 8,
+                        50, new Arsenal.Bullets.SimpleBulletData("smallRedRect", 500, 5, 20, 20, true)), map));
                 }
             }
         }
@@ -58,8 +58,8 @@ namespace Server.Universe
 
             agent.Raise(new Vector());
 
-            agent.Bag.Launcher.Launch(new Grenade(agent.POV, agent.LookTo, new GrenadeData("bigWhiteRect", 0, 1,
-                        50, new SimpleBulletData("smallWhiteRect", 500, 5, 0, 200, true)), map));
+            agent.Bag.Launcher.Launch(new Arsenal.Bullets.Grenade(agent.POV, agent.LookTo, new Arsenal.Bullets.GrenadeData("bigWhiteRect", 0, 1,
+                        50, new Arsenal.Bullets.SimpleBulletData("smallWhiteRect", 500, 5, 0, 200, true)), map));
         }
 
         protected override Player GetPlayer(string name)
