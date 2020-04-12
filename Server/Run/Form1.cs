@@ -36,6 +36,12 @@ namespace Server
             button1.Enabled = false;
             server = new Contact.Server(textBox1.Text);
             server.Start();
+            timer1.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            richTextBox1.Text = server.Log;
         }
     }
 }

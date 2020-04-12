@@ -16,6 +16,7 @@ namespace Server.Contact
         Thread start;
         int stuck;
         bool running;
+        string log;
         ClientData[] clients;
 
         public Server(string data)
@@ -35,6 +36,7 @@ namespace Server.Contact
             running = false;
             clients = new ClientData[Constants.MaxPlayers];
             stuck = 0;
+            log = "";
         }
 
         public void Start()
@@ -139,6 +141,10 @@ namespace Server.Contact
 
         void Remove(int index)
         {
+            DateTime time = DateTime.Now;
+
+            log += clients[index].name + " left the game at " + time.Hour + ":" + time.Minute + ":" + time.Second + "\n";
+
             if (clients[index].name.Length <= Constants.NamesMaxLength && clients[index].name.Length > 0)
                 world.RemovePlayer(clients[index].name);
 
@@ -171,7 +177,9 @@ namespace Server.Contact
                         listener.Send(cd.socketID, t);
                     }
 
-                    Console.WriteLine(cd.name + " has joined the game.");
+                    DateTime time = DateTime.Now;
+
+                    log += name + " joined the game at " + time.Hour + ":" + time.Minute + ":" + time.Second + "\n";
                 }
 
                 if (listener.HasSent(cd.socketID))
@@ -210,5 +218,7 @@ namespace Server.Contact
         public bool Running { get { return running; } }
 
         public int Stuck { get { return stuck; } }
+
+        public string Log { get { return log; } }
     }
 }

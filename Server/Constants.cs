@@ -23,7 +23,7 @@ namespace Server
         public const int Port = 55555;
         public const int MaxPlayers = 10;
         public const int NamesMaxLength = 16;
-        public const int GameSpeedDelay = 20;
+        public const int GameSpeedDelay = 25;
         public const int JoinDelay = 10;
         public const int CheckAliveDelay = 500;
 
