@@ -42,7 +42,8 @@ namespace Server.Entity
                     Move(map);
                 else
                 {
-                    if ((body.position - closest).Length > (navigator.MaximumDistance + navigator.MinimumDistance) / 2)
+                    if ((body.position - closest).Length > (navigator.MaximumDistance + navigator.MinimumDistance) / 2 || 
+                        (body.position - closest).Length < navigator.MaximumDistance)
                         Move(map);
 
                     Attack();
@@ -131,10 +132,10 @@ namespace Server.Entity
             switch (type)
             {
                 case "knife":
-                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Knife, 60, 0, 100, 10);
+                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Knife, 60, 0, 100, 5);
 
                 case "gun":
-                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Gun, 500, 200, 100, 10);
+                    return new Zombie(new Thing("player", position), "ZOMBIE" + Universe.World.NextID, Weapon.Gun, 500, 300, 100, 5);
             }
 
             throw new Exception("Unknown zombie type");

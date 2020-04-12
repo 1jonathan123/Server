@@ -42,14 +42,14 @@ namespace Server.Entity
             start = (map.FromBlockPosition(start) - new Vector(0.5, 0.5)).Round();
             target = (map.FromBlockPosition(target) - new Vector(0.5, 0.5)).Round();
 
-            best = start;
-
-            values[start] = new Tuple<Vector, double, double>(null, 0, (float)(start - target).Length);
-
-            queue.Enqueue(start, (float)values[start].Item3);
-
             this.target = target;
             this.map = map;
+
+            best = start;
+
+            values[start] = new Tuple<Vector, double, double>(null, 0, Heuristic(start));
+
+            queue.Enqueue(start, (float)values[start].Item3);
         }
 
         public LinkedList<Vector> Navigate(int maxAmount)
@@ -58,7 +58,7 @@ namespace Server.Entity
             {
                 Vector next = queue.Dequeue();
 
-                if (values[next].Item3 < (best - target).Length)
+                if (values[next].Item1 != null && (values[next].Item1 - target).Length < (best - target).Length)
                     best = next;
 
                 if (values[next].Item1 != null)
@@ -66,6 +66,7 @@ namespace Server.Entity
                     Vector position = map.ToBlockPosition(values[next].Item1);
 
                     if ((position - targetPosition).Length <= (maximumDistance + minimumDistance) / 2
+                        && (position - targetPosition).Length >= minimumDistance
                         && map.Clash(new Rect(position, new Vector(10, 10)), targetPosition - position) > 1 - Constants.Epsilon2)
                         return GetList(next);
                 }

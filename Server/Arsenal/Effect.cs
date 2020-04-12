@@ -4,6 +4,8 @@ using System.Text;
 
 namespace Server.Arsenal
 {
+    //not in use yet
+
     class Effect
     {
         bool timeless;

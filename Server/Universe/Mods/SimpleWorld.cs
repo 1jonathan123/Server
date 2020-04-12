@@ -11,13 +11,12 @@ namespace Server.Universe.Mods
     class SimpleWorld : World
     {
         public SimpleWorld(string data) : base(data, new Map(Data.DataReader.ReadMap(
-            Constants.MapsDirectory + "/smallMap.txt", Constants.BlocksDirectory)))
+            Constants.MapsDirectory + "/smallMap1.txt", Constants.BlocksDirectory)))
         {
-            for (int i = 0; i < 1; ++i)
-                teams.Add(Zombie.GetZombie("gun", new Vector((2 * i - 1) * 100, rnd.Next(-200, 200))), "#zombies" + i);
+            //these zombies DO NOT blong to the same team so they are NOT friends
 
-            for (int i = 0; i < 1; ++i)
-                teams.Add(Zombie.GetZombie("knife", new Vector((2 * i - 1) * 100, rnd.Next(-200, 200))), "#zombies" + (i + 2));
+            teams.Add(Zombie.GetZombie("knife", new Vector()), "ZOMBIES0");
+            teams.Add(Zombie.GetZombie("gun", new Vector()), "ZOMBIES1");
         }
 
         public override void Live()
@@ -28,6 +27,7 @@ namespace Server.Universe.Mods
             {
                 Player player = kvp.Value;
 
+                //recover hp
                 if (player.AgentState['1'] == State.FirstTimeDown && player.money >= 10
                     && player.hp < player.MaxHp)
                 {
@@ -37,12 +37,14 @@ namespace Server.Universe.Mods
                         player.hp = player.MaxHp;
                 }
 
+                //buy a random weapon
                 if (player.AgentState['2'] == State.FirstTimeDown && player.money >= 20)
                 {
                     player.money -= 20;
                     player.Bag.Primary = Weapon.NiceWeapon;
                 }
 
+                //through grenade
                 if (player.AgentState['3'] == State.FirstTimeDown && player.money >= 30)
                 {
                     player.money -= 30;
@@ -69,7 +71,7 @@ namespace Server.Universe.Mods
 
         protected override string GetTeam(string name)
         {
-            return name;
+            return name; //the players are all enemies, because they blong to different teams
         }
     }
 }

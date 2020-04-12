@@ -38,26 +38,6 @@ namespace Server.Universe
             return min;
         }
 
-        /*public double Clash(Thing obj, Vector movement)
-        {
-            double bound = Model.models[obj.modelID].BoundRadius;
-
-            Vector checkFrom = FromBlockPosition(new Vector(obj.position.x - bound + Math.Min(0, movement.x),
-                obj.position.y - bound + Math.Min(0, movement.y)));
-
-            Vector checkTo = FromBlockPosition(new Vector(obj.position.x + bound + Math.Max(0, movement.x),
-                obj.position.y + bound + Math.Max(0, movement.y)));
-
-            double min = 1;
-
-            for (int i = (int)Math.Max(0, checkFrom.y); i < Math.Min(blocks.GetLength(0), checkTo.y); ++i)
-                for (int j = (int)Math.Max(0, checkFrom.x); j < Math.Min(blocks.GetLength(1), checkTo.x); ++j)
-                    if (blocks[i, j].Solid)
-                        min = Math.Min(min, obj.Clash(blocks[i, j].body, movement));
-
-            return min;
-        }*/
-
         public void Print(Screen screen, Vector POV)
         {
             Vector drawFrom = FromBlockPosition(POV - Constants.ScreenSize / 2);

@@ -41,8 +41,6 @@ namespace Server.Universe
 
             teams.Print(player, screen);
 
-            //screen.Add(new Text(map.FromBlockPosition(players[player].POV).ToString(), new Vector(), 10, "black"));
-
             return screen;
         }
 
@@ -69,7 +67,7 @@ namespace Server.Universe
 
         public void SendMessage(string player, string message)
         {
-
+            //TODO...
         }
 
         public virtual void RemovePlayer(string name)
@@ -91,7 +89,7 @@ namespace Server.Universe
 
         public string AddPlayer(string name) //returns the new name for this player
         {
-            name = GetName(name);
+            name = GetName(name.ToLower());
 
             Player p = GetPlayer(name);
 
@@ -101,15 +99,19 @@ namespace Server.Universe
             return p.Name;
         }
 
+        //called when an agent dies
         protected virtual void Death(Agent entity, string team)
         {
             entity.LastHitBy.money += entity.Bounty;
         }
 
+        //return Player object for a new player
         protected abstract Player GetPlayer(string name);
 
+        //returns the team for a new player
         protected abstract string GetTeam(string name);
 
+        //id system, for monsters
         public static int NextID { get { return IDCounter++; } }
     }
 }

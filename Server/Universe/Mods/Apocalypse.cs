@@ -11,6 +11,8 @@ using Server.Arsenal;
 
 namespace Server.Universe.Mods
 {
+    //not in use yet
+
     class Apocalypse : World
     {
         public Apocalypse(string data) : base(data, new Map(Data.DataReader.ReadMap(
