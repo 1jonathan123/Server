@@ -10,9 +10,9 @@ so you need to download it to run the program.
 The armor class and the effect class are not in use yet.
 Some weapons will have an effect that they will cause to their victims.
 Some armors will have an effect that they will cause to their owner.
-For instance, some effect might be burning, freezing, bleeding, and so on.
+For instance, some effect might be burning, freezing, bleeding, regeneration, and so on.
 Effect might be limited by time or not.
-In addition, there should be more game mods, such as teams, flags, zombie apocalypse and more.
+In addition, there should be more game modes, such as teams, flags, zombie apocalypse and more.
 
 ## Project structure
 The project is divided by namespaces.
