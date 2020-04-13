@@ -7,7 +7,7 @@ using Server.Tangible;
 
 namespace Server.Entity
 {
-    class Agent
+    abstract class Agent
     {
         protected Vector knockBack;
         int maxHp;

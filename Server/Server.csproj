@@ -90,10 +90,10 @@
     <Compile Include="Run\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tangible\Rect.cs" />
-    <Compile Include="Universe\Mods\Apocalypse.cs" />
+    <Compile Include="Universe\Modes\Apocalypse.cs" />
     <Compile Include="Universe\Screen.cs" />
     <Compile Include="Contact\Server.cs" />
-    <Compile Include="Universe\Mods\SimpleWorld.cs" />
+    <Compile Include="Universe\Modes\SimpleWorld.cs" />
     <Compile Include="Universe\Teams.cs" />
     <Compile Include="Tangible\Text.cs" />
     <Compile Include="Tangible\Vector.cs" />

@@ -25,11 +25,11 @@ namespace Server.Contact
             {
                 case "debug":
                 case "simpleWorld":
-                    world = new Universe.Mods.SimpleWorld(data);
+                    world = new Universe.Modes.SimpleWorld(data);
                     break;
 
                 case "apocalypse":
-                    world = new Universe.Mods.Apocalypse(data);
+                    world = new Universe.Modes.Apocalypse(data);
                     break;
             }
 

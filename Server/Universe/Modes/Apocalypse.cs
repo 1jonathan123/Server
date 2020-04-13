@@ -9,7 +9,7 @@ using Server.Entity;
 using Server.Tangible;
 using Server.Arsenal;
 
-namespace Server.Universe.Mods
+namespace Server.Universe.Modes
 {
     //not in use yet
 

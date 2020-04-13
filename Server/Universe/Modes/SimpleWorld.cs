@@ -6,7 +6,7 @@ using Server.Entity;
 using Server.Tangible;
 using Server.Arsenal;
 
-namespace Server.Universe.Mods
+namespace Server.Universe.Modes
 {
     class SimpleWorld : World
     {
