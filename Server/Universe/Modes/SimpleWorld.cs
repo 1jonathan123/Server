@@ -21,8 +21,6 @@ namespace Server.Universe.Modes
 
         public override void Live()
         {
-            base.Live();
-
             foreach (KeyValuePair<string, Player> kvp in players)
             {
                 Player player = kvp.Value;
@@ -52,6 +50,8 @@ namespace Server.Universe.Modes
                         50, new Arsenal.Bullets.SimpleBulletData("smallRedRect", 500, 5, 20, 20, true)), map));
                 }
             }
+
+            base.Live();
         }
 
         protected override void Death(Agent agent, string team)

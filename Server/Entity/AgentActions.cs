@@ -17,17 +17,17 @@ namespace Server.Entity
     class AgentActions
     {
         Dictionary<char, State> keys;
-        State rightMouse;
-        State middleMouse;
-        State leftMouse;
+        State[] mouse;
         public Vector lookDirection;
 
         public AgentActions()
         {
             keys = new Dictionary<char, State>();
-            rightMouse = State.Up;
-            middleMouse = State.Up;
-            leftMouse = State.Up;
+
+            mouse = new State[Enum.GetNames(typeof(Mouse)).Length];
+            for (int i = 0; i < Enum.GetNames(typeof(Mouse)).Length; ++i)
+                mouse[i] = State.Up;
+
             lookDirection = new Vector(1);
         }
 
@@ -53,6 +53,15 @@ namespace Server.Entity
             }
         }
 
+        public void Live()
+        {
+            foreach (KeyValuePair<char, State> kvp in new Dictionary<char, State>(keys))
+                keys[kvp.Key] = UpdateState(kvp.Value);
+
+            for (int i = 0; i < Enum.GetNames(typeof(Mouse)).Length; ++i)
+                mouse[i] = UpdateState(mouse[i]);
+        }
+
         public bool IsDown(char key)
         {
             if (!keys.ContainsKey(key))
@@ -73,41 +82,12 @@ namespace Server.Entity
 
         public void MouseDown(Mouse click)
         {
-            switch (click)
-            {
-                case Mouse.Right:
-                    if (rightMouse == State.Up)
-                        rightMouse = State.FirstTimeDown;
-                    break;
-
-                case Mouse.Middle:
-                    if (middleMouse == State.Up)
-                        middleMouse = State.FirstTimeDown;
-                    break;
-
-                case Mouse.Left:
-                    if (leftMouse == State.Up)
-                        leftMouse = State.FirstTimeDown;
-                    break;
-            }
+            mouse[(int)click] = State.FirstTimeDown;
         }
 
         public void MouseUp(Mouse click)
         {
-            switch (click)
-            {
-                case Mouse.Right:
-                    rightMouse = State.Up;
-                    break;
-
-                case Mouse.Middle:
-                    middleMouse = State.Up;
-                    break;
-
-                case Mouse.Left:
-                    leftMouse = State.Up;
-                    break;
-            }
+            mouse[(int)click] = State.Up;
         }
 
         public State this[char c]
@@ -117,39 +97,15 @@ namespace Server.Entity
                 if (!keys.ContainsKey(c))
                     return State.Up;
 
-                State t = keys[c];
-                keys[c] = UpdateState(t);
-                return t;
+                return keys[c];
             }
         }
 
-        public State RightMouse
+        public State this[Mouse index]
         {
             get
             {
-                State t = rightMouse;
-                rightMouse = UpdateState(t);
-                return t;
-            }
-        }
-
-        public State MiddleMouse
-        {
-            get
-            {
-                State t = middleMouse;
-                middleMouse = UpdateState(t);
-                return t;
-            }
-        }
-
-        public State LeftMouse
-        {
-            get
-            {
-                State t = leftMouse;
-                leftMouse = UpdateState(t);
-                return t;
+                return mouse[(int)index];
             }
         }
 

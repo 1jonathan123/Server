@@ -72,10 +72,12 @@ namespace Server.Entity
 
             knockBack -= currentKB;
 
-            if (agentActions.LeftMouse != State.Up)
+            if (agentActions[Mouse.Left] != State.Up)
                 bag.Primary.Shoot(body.position, Vector.FromAngle(body.angle), map);
 
             bag.Live(map, body.position);
+
+            agentActions.Live();
 
             if (hp <= 0)
                 return false;
