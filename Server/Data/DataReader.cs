@@ -6,6 +6,9 @@ using System.Text;
 
 using Server.Tangible;
 using Server.Universe;
+using Server.Arsenal;
+using Server.Arsenal.Bullets;
+using Server.Entity;
 
 namespace Server.Data
 {
@@ -107,6 +110,63 @@ namespace Server.Data
             fs.Close();
 
             return blocks;
+        }
+
+        static IBulletData GetBulletData(Dictionary<string, string> properties, string start = "")
+        {
+            switch (properties[start + "type"])
+            {
+                case "simpleBullet":
+                    return new SimpleBulletData(properties[start + "modelID"], Convert.ToDouble(properties[start + "range"]),
+                        Convert.ToDouble(properties[start + "speed"]), Convert.ToDouble(properties[start + "damage"]),
+                        Convert.ToDouble(properties[start + "kb"]), Convert.ToBoolean(properties[start + "boing"]));
+
+                case "grenade":
+                    return new GrenadeData(properties[start + "modelID"], Convert.ToDouble(properties[start + "range"]),
+                        Convert.ToDouble(properties[start + "speed"]), Convert.ToInt32(properties[start + "shrapnelsNumber"]),
+                        GetBulletData(properties, "sub_" + start));
+
+                case "volleyBullet":
+                    return new VolleyBulletData(Convert.ToInt32(properties[start + "bulletsNumber"]), Convert.ToInt32(properties[start + "bulletsDelay"]),
+                        Convert.ToDouble(properties[start + "precision"]), GetBulletData(properties, "sub_" + start));
+
+                case "longBullet":
+                    return new LongBulletData(new Vector(properties[start + "size"]), properties[start + "texture"],
+                        Convert.ToInt32(properties[start + "lifetime"]), Convert.ToDouble(properties[start + "damage"]),
+                        Convert.ToDouble(properties[start + "kb"]));
+
+                case "magicBullet":
+                    return new MagicBulletData(properties[start + "modelID"], Convert.ToDouble(properties[start + "speed"]),
+                        Convert.ToDouble(properties[start + "range"]), Convert.ToInt32(properties[start + "radius"]),
+                        GetBulletData(properties, "sub_" + start));
+            }
+
+            throw new Exception("Unknown type");
+        }
+
+        public static Dictionary<string, WeaponData> ReadWeapons(string directory)
+        {
+            Dictionary<string, WeaponData> weapons = new Dictionary<string, WeaponData>();
+
+            Dictionary<string, Dictionary<string, string>> data = Read(directory);
+
+            foreach (KeyValuePair<string, Dictionary<string, string>> kvp in data)
+                weapons[kvp.Key] = new WeaponData(GetBulletData(kvp.Value), Convert.ToInt32(kvp.Value["delay"]), kvp.Value["name"]);
+
+            return weapons;
+        }
+
+        public static Dictionary<string, ZombieData> ReadZombies(string directory)
+        {
+            Dictionary<string, ZombieData> zombies = new Dictionary<string, ZombieData>();
+
+            Dictionary<string, Dictionary<string, string>> data = Read(directory);
+
+            foreach (KeyValuePair<string, Dictionary<string, string>> kvp in data)
+                zombies[kvp.Key] = new ZombieData(kvp.Value["modelID"], kvp.Value["weaponID"], Convert.ToInt32(kvp.Value["maximumDistance"]),
+                    Convert.ToInt32(kvp.Value["minimumDistance"]), Convert.ToInt32(kvp.Value["maxHp"]), Convert.ToInt32(kvp.Value["bounty"]));
+
+            return zombies;
         }
     }
 }

@@ -15,6 +15,13 @@ namespace Server.Arsenal
         int delayCounter;
         string name;
 
+        static readonly Dictionary<string, WeaponData> Weapons;
+
+        static Weapon()
+        {
+            Weapons = Data.DataReader.ReadWeapons(Constants.WeaponsDirectory);
+        }
+
         public Weapon(IBulletData data, int delay, string name)
         {
             this.data = data;
@@ -47,7 +54,15 @@ namespace Server.Arsenal
             }
         }
 
-        public static Weapon Sword
+        public double Loading
+        {
+            get
+            {
+                return (double)delayCounter / delay;
+            }
+        }
+
+        /*public static Weapon Sword
         {
             get
             {
@@ -105,19 +120,16 @@ namespace Server.Arsenal
                         return new Weapon(new VolleyBulletData(5, 5, 0.9, new SimpleBulletData("smallBlackRect", 800, 7, 5, 5, true)), 100, "Volley");
 
                     case 9:
-                        return new Weapon(new MagicBulletData("smallPurpleRect", 0.05, 500, 100, new SimpleBulletData("smallPurpleBullet", 800, 15, 20, 20, false)), 100, "Wand");
+                        return new Weapon(new MagicBulletData("smallPurpleRect", 500, 0.05, 100, new SimpleBulletData("smallPurpleBullet", 800, 15, 20, 20, false)), 100, "Wand");
                 }
 
                 return null;
             }
-        }
+        }*/
 
-        public double Loading
+        public static Weapon GetWeapon(string name)
         {
-            get
-            {
-                return (double)delayCounter / delay;
-            }
+            return Weapons[name].Copy();
         }
     }
 }

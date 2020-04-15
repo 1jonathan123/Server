@@ -15,12 +15,19 @@ namespace Server.Entity
         LinkedList<Vector> path;
         Vector closest;
 
+        static readonly Dictionary<string, ZombieData> Zombies;
+
         public Zombie(Thing body, string name, Weapon primary, double maximumDistance,
             double minimumDistance, int maxHp, int bounty)
             : base(body, name, maxHp, new Bag(), bounty, 0)
         {
             bag.Primary = primary;
             navigator = new Navigator(maximumDistance, minimumDistance);
+        }
+
+        static Zombie()
+        {
+            Zombies = Data.DataReader.ReadZombies(Constants.ZombiesDirectory);
         }
 
         public override void Interact(Agent enemy)
@@ -127,7 +134,7 @@ namespace Server.Entity
             agentActions.MouseUp(Mouse.Left);
         }
 
-        public static Zombie GetZombie(string type, Vector position)
+        /*public static Zombie GetZombie(string type, Vector position)
         {
             switch (type)
             {
@@ -139,6 +146,11 @@ namespace Server.Entity
             }
 
             throw new Exception("Unknown zombie type");
+        }*/
+
+        public static Zombie GetZombie(string type, Vector position)
+        {
+            return Zombies[type].Copy(position, "ZOMBIE" + Universe.World.NextID);
         }
     }
 }

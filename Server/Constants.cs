@@ -33,6 +33,8 @@ namespace Server
         public const char East = 'D';
 
         public const string ModelsDirectory = "data/models";
+        public const string WeaponsDirectory = "data/weapons";
+        public const string ZombiesDirectory = "data/zombies";
         public const string MapsDirectory = "data/maps";
         public const string BlocksDirectory = "data/blocks";
 

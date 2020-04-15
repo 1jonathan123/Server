@@ -25,10 +25,10 @@ namespace Server.Tangible
             switch (another)
             {
                 case Thing thing:
-                    return Model.models[modelID].Clash(position, angle, Model.models[thing.modelID], thing.position, thing.angle, movement);
+                    return Model.Models[modelID].Clash(position, angle, Model.Models[thing.modelID], thing.position, thing.angle, movement);
 
                 case Rect rect:
-                    return Model.models[modelID].Clash(position, angle, rect, movement);
+                    return Model.Models[modelID].Clash(position, angle, rect, movement);
             }
 
             throw new Exception("Type error");
@@ -36,8 +36,8 @@ namespace Server.Tangible
 
         public void GetBytes(Contact.Bytes b, Vector POV)
         {
-            if (Math.Abs(position.x - POV.x) > Constants.ScreenSize.x / 2 + Model.models[modelID].BoundRadius ||
-                Math.Abs(position.y - POV.y) > Constants.ScreenSize.y / 2 + Model.models[modelID].BoundRadius)
+            if (Math.Abs(position.x - POV.x) > Constants.ScreenSize.x / 2 + Model.Models[modelID].BoundRadius ||
+                Math.Abs(position.y - POV.y) > Constants.ScreenSize.y / 2 + Model.Models[modelID].BoundRadius)
                 return;
 
             b.Add(Model.order[modelID]);
@@ -45,7 +45,7 @@ namespace Server.Tangible
             b.Add(angle);
         }
 
-        public double BoundRadius { get { return Model.models[modelID].BoundRadius; } }
+        public double BoundRadius { get { return Model.Models[modelID].BoundRadius; } }
 
         public Vector Position { get { return position; } }
     }

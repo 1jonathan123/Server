@@ -30,7 +30,7 @@ namespace Server.Tangible
                     return CollisionCheck.Collision(Points, rect.Points, movement);
 
                 case Thing thing:
-                    return Model.models[thing.modelID].Clash(thing.position, thing.angle, this, -movement);
+                    return Model.Models[thing.modelID].Clash(thing.position, thing.angle, this, -movement);
             }
 
             throw new Exception("Type error");

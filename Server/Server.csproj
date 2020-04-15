@@ -46,11 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arsenal\Bullets\GrenadeData.cs" />
+    <Compile Include="Arsenal\Bullets\LongBulletData.cs" />
+    <Compile Include="Arsenal\Bullets\MagicBulletData.cs" />
+    <Compile Include="Arsenal\Bullets\SimpleBulletData.cs" />
+    <Compile Include="Arsenal\Bullets\VolleyBulletData.cs" />
+    <Compile Include="Arsenal\WeaponData.cs" />
     <Compile Include="Entity\Agent.cs" />
     <Compile Include="Entity\AgentActions.cs" />
     <Compile Include="Entity\Zombie.cs" />
     <Compile Include="Arsenal\Armor.cs" />
     <Compile Include="Arsenal\Bag.cs" />
+    <Compile Include="Entity\ZombieData.cs" />
     <Compile Include="Priority_Queue\FastPriorityQueue.cs" />
     <Compile Include="Priority_Queue\FastPriorityQueueNode.cs" />
     <Compile Include="Priority_Queue\GenericPriorityQueue.cs" />

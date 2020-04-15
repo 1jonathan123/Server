@@ -16,7 +16,7 @@ namespace Server.Universe.Modes
             //these zombies DO NOT blong to the same team so they are NOT friends
 
             teams.Add(Zombie.GetZombie("knife", new Vector()), "ZOMBIES0");
-            teams.Add(Zombie.GetZombie("gun", new Vector()), "ZOMBIES1");
+            //teams.Add(Zombie.GetZombie("gun", new Vector()), "ZOMBIES1");
         }
 
         public override void Live()
@@ -41,7 +41,7 @@ namespace Server.Universe.Modes
                 if (player.AgentState['2'] == State.FirstTimeDown && player.money >= 20)
                 {
                     player.money -= 20;
-                    player.Bag.Primary = Weapon.NiceWeapon;
+                    //player.Bag.Primary = Weapon.NiceWeapon;
                 }
 
                 //through grenade

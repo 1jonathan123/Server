@@ -8,28 +8,10 @@ using Server.Tangible;
 
 namespace Server.Arsenal.Bullets
 {
-    class GrenadeData : SimpleBulletData
-    {
-        public SimpleBulletData shrapnelsData;
-        int shrapnelsNumber;
-
-        public GrenadeData(string modelID, double range, double speed, int shrapnelsNumber, SimpleBulletData shrapnelsData)
-            : base(modelID, range, speed, 0, 0, true)
-        {
-            this.shrapnelsNumber = shrapnelsNumber;
-            this.shrapnelsData = shrapnelsData;
-        }
-
-        public override IBullet GetBullet(Vector position, Vector direction, Universe.Map map)
-        {
-            return new Grenade(position, direction, this, map);
-        }
-    }
-
     class Grenade : SimpleBullet
     {
         bool isBombing;
-        SimpleBulletData shrapnelsData;
+        IBulletData shrapnelsData;
         Universe.Map map;
 
         public Grenade(Vector position, Vector direction, GrenadeData grenadeData, Universe.Map map)

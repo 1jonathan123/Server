@@ -8,7 +8,7 @@ namespace Server.Tangible
     {
         List<IShape> shapes;
 
-        public static Dictionary<string, Model> models;
+        public static readonly Dictionary<string, Model> Models;
         public static Dictionary<string, int> order;
         static Contact.Bytes modelsBytes;
 
@@ -16,13 +16,13 @@ namespace Server.Tangible
 
         static Model()
         {
-            models = Data.DataReader.ReadModels(Constants.ModelsDirectory);
+            Models = Data.DataReader.ReadModels(Constants.ModelsDirectory);
 
             order = new Dictionary<string, int>();
 
             int index = 0;
 
-            foreach (KeyValuePair<string, Model> kvp in models)
+            foreach (KeyValuePair<string, Model> kvp in Models)
             {
                 order.Add(kvp.Key, index);
                 ++index;
@@ -96,7 +96,7 @@ namespace Server.Tangible
             {
                 modelsBytes = new Contact.Bytes();
 
-                foreach (KeyValuePair<string, Model> kvp in models)
+                foreach (KeyValuePair<string, Model> kvp in Models)
                     kvp.Value.GetBytes(modelsBytes);
             }
 

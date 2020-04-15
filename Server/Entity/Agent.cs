@@ -103,7 +103,7 @@ namespace Server.Entity
             bag.Print(screen);
             screen.Add(body);
 
-            double bound = Model.models[body.modelID].BoundRadius;
+            double bound = Model.Models[body.modelID].BoundRadius;
 
             screen.Add(new Text(name, body.position - new Vector(0, bound * 1.2), 24, "white"));
 

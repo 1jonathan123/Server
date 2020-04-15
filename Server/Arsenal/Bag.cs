@@ -21,8 +21,8 @@ namespace Server.Arsenal
         {
             weapons = new Weapon[Constants.WeaponsPerHand];
 
-            weapons[0] = Weapon.Gun;
-            weapons[1] = Weapon.Sword;
+            weapons[0] = Weapon.GetWeapon("gun");
+            weapons[1] = Weapon.GetWeapon("sword");
 
             launcher = new Launcher();
 
