@@ -13,6 +13,8 @@ namespace Server.Universe
         {
             this.blocks = blocks;
 
+            //blocks[10, 10] = new Block("temp");
+
             for (int i = 0; i < blocks.GetLength(0); ++i)
                 for (int j = 0; j < blocks.GetLength(1); ++j)
                     blocks[i, j].body = new Thing(blocks[i, j].ModelID, ToBlockPosition(i, j));
@@ -78,7 +80,7 @@ namespace Server.Universe
 
         public bool ClearSight(Vector a, Vector b)
         {
-            return Clash(new Rect(a, new Vector(10, 10)), b - a) > 1 - Constants.Epsilon2;
+            return Clash(new Rect(a, new Vector(10, 10)), b - a) > 1 - Constants.Epsilon;
         }
     }
 }

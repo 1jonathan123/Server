@@ -24,7 +24,7 @@ namespace Server.Arsenal.Bullets
 
         public Tuple<Vector, double, bool> Interact(Thing obj)
         {
-            if (body.Clash(obj, direction) < 1 - Constants.Epsilon2)
+            if (body.Clash(obj, direction) < 1 - Constants.Epsilon)
                 return new Tuple<Vector, double, bool>((direction / direction.Length) * data.kb, data.damage, true);
 
             return null;

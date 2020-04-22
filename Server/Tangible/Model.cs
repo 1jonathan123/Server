@@ -8,7 +8,7 @@ namespace Server.Tangible
     {
         List<IShape> shapes;
 
-        public static readonly Dictionary<string, Model> Models;
+        public static /*readonly*/ Dictionary<string, Model> Models;
         public static Dictionary<string, int> order;
         static Contact.Bytes modelsBytes;
 
@@ -41,10 +41,12 @@ namespace Server.Tangible
 
         public void GetBytes(Contact.Bytes bytes)
         {
-            bytes.Add(shapes.Count);
+            Universe.Screen screen = new Universe.Screen(null);
 
             foreach (IShape shape in shapes)
-                shape.GetBytes(bytes);
+                screen.Add(shape);
+
+            screen.GetBytes(bytes);
         }
 
         public double Clash(Vector position1, double angle1, Model another, Vector position2, double angle2, Vector movement)
@@ -54,8 +56,10 @@ namespace Server.Tangible
             double min = 1;
 
             foreach (IShape shape1 in shapes)
-                foreach (IShape shape2 in another.shapes)
-                    min = Math.Min(min, shape1.RotateAround(position1, angle1).Clash(shape2.RotateAround(position2, angle2), movement));
+                if (shape1.Solid)
+                    foreach (IShape shape2 in another.shapes)
+                        if (shape2.Solid)
+                            min = Math.Min(min, shape1.RotateAround(position1, angle1).Clash(shape2.RotateAround(position2, angle2), movement));
 
             return min;
         }
@@ -67,7 +71,8 @@ namespace Server.Tangible
             double min = 1;
 
             foreach (IShape shape in shapes)
-                min = Math.Min(min, shape.RotateAround(position, angle).Clash(another, movement));
+                if (shape.Solid)
+                    min = Math.Min(min, shape.RotateAround(position, angle).Clash(another, movement));
 
             return min;
         }
@@ -79,8 +84,6 @@ namespace Server.Tangible
             foreach (IShape shape in shapes)
                 if (shape.Solid)
                     boundRadius = Math.Max(boundRadius, shape.BoundRadius);
-
-            boundRadius += Constants.Epsilon1;
         }
 
         public void Add(IShape shape)

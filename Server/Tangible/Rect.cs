@@ -24,19 +24,25 @@ namespace Server.Tangible
 
         public double Clash(IClashAble another, Vector movement)
         {
-            switch(another)
+            if (!solid || !another.Solid)
+                return 1;
+
+            switch (another)
             {
                 case Rect rect:
-                    return CollisionCheck.Collision(Points, rect.Points, movement);
+                    return CollisionCheck.Collision(Points, movement, rect.Points);
 
                 case Thing thing:
                     return Model.Models[thing.modelID].Clash(thing.position, thing.angle, this, -movement);
+
+                case Circle circle:
+                    return CollisionCheck.Collision(circle.Position, circle.BoundRadius, movement, Points);
             }
 
             throw new Exception("Type error");
         }
 
-        Vector[] Points
+        internal Vector[] Points
         {
             get
             {
@@ -80,10 +86,10 @@ namespace Server.Tangible
             double cos = Math.Cos(angle);
             double sin = Math.Sin(angle);
 
-            Vector rotated = new Vector(cos * (position.x) - sin * (position.y),
-                sin * (position.x) + cos * (position.y));
+            Vector rotated = new Vector(cos * position.x - sin * position.y,
+                sin * position.x + cos * position.y);
 
-            return new Rect(rotated + center, size, texture, this.angle + angle);
+            return new Rect(rotated + center, size, texture, this.angle + angle, solid);
         }
 
         public bool Solid { get { return solid; } }

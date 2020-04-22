@@ -38,8 +38,7 @@ namespace Server
         public const string MapsDirectory = "data/maps";
         public const string BlocksDirectory = "data/blocks";
 
-        public const double Epsilon1 = 0.00000001; //a small enough number
-        public const double Epsilon2 = 0.00001;
+        public const double Epsilon = 0.00000001;
 
         public static readonly Tangible.Vector ScreenSize = new Tangible.Vector(1920, 1080);
     }

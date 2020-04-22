@@ -28,7 +28,7 @@ namespace Server.Arsenal.Bullets
         public Tuple<Vector, double, bool> Interact(Thing obj)
         {
             if (target == null || (obj.position - body.position).Length < (target - body.position).Length)
-                if (map.Clash(body, obj.position - body.position) > 1 - Constants.Epsilon2)
+                if (map.Clash(body, obj.position - body.position) > 1 - Constants.Epsilon)
                     target = obj.position;
 
             return null;

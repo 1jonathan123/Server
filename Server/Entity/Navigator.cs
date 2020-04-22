@@ -67,7 +67,7 @@ namespace Server.Entity
 
                     if ((position - targetPosition).Length <= (maximumDistance + minimumDistance) / 2
                         && (position - targetPosition).Length >= minimumDistance
-                        && map.Clash(new Rect(position, new Vector(10, 10)), targetPosition - position) > 1 - Constants.Epsilon2)
+                        && map.Clash(new Rect(position, new Vector(10, 10)), targetPosition - position) > 1 - Constants.Epsilon)
                         return GetList(next);
                 }
 

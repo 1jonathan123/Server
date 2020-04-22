@@ -18,7 +18,7 @@ namespace Server.Data
         //the keys are names, the values are dictionaries where the keys are properties names and the values are their values
         public static Dictionary<string, Dictionary<string, string>> Read(string directory)
         {
-            Dictionary<string, Dictionary<string, string>> Things = new Dictionary<string, Dictionary<string, string>>();
+            Dictionary<string, Dictionary<string, string>> things = new Dictionary<string, Dictionary<string, string>>();
 
             string[] paths = Directory.GetFiles(directory);
 
@@ -32,6 +32,10 @@ namespace Server.Data
                 while (!sr.EndOfStream)
                 {
                     string[] property = sr.ReadLine().Split('=');
+
+                    if (property.Length < 2)
+                        continue;
+
                     property[0] = property[0].Replace(" ", "");
 
                     if (property[1].Contains('"'))
@@ -42,15 +46,15 @@ namespace Server.Data
                     properties.Add(property[0], property[1]);
                 }
 
-                string ThingName = Path.GetFileName(path);
+                string thingName = Path.GetFileName(path);
 
-                Things.Add(ThingName.Substring(0, ThingName.IndexOf('.')), properties);
+                things.Add(thingName.Substring(0, thingName.IndexOf('.')), properties);
 
                 sr.Close();
                 fs.Close();
             }
 
-            return Things;
+            return things;
         }
 
         public static Dictionary<string, Model> ReadModels(string directory)
@@ -66,10 +70,19 @@ namespace Server.Data
                 for (int i = 0; kvp.Value.ContainsKey("rects[" + i + "].position"); ++i)
                 {
                     model.Add(new Rect(new Vector(kvp.Value["rects[" + i + "].position"]), new Vector(kvp.Value["rects[" + i + "].size"]),
-                        kvp.Value["rects[" + i + "].texture"], Convert.ToDouble(kvp.Value["rects[" + i + "].angle"])));
+                        kvp.Value["rects[" + i + "].texture"], Convert.ToDouble(kvp.Value["rects[" + i + "].angle"]), Convert.ToBoolean(kvp.Value["rects[" + i + "].solid"])));
+                }
+
+                for (int i = 0; kvp.Value.ContainsKey("circles[" + i + "].position"); ++i)
+                {
+                    model.Add(new Circle(new Vector(kvp.Value["circles[" + i + "].position"]), Convert.ToDouble(kvp.Value["circles[" + i + "].radius"]),
+                        kvp.Value["circles[" + i + "].texture"], Convert.ToBoolean(kvp.Value["circles[" + i + "].solid"])));
                 }
 
                 model.UpdateBoundBox();
+
+                Console.WriteLine("great");
+
                 models.Add(kvp.Key, model);
             }
 

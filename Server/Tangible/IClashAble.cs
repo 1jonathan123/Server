@@ -8,6 +8,8 @@ namespace Server.Tangible
 {
     interface IClashAble
     {
+        bool Solid { get; }
+
         //to use for bounds
         double BoundRadius { get; }
 

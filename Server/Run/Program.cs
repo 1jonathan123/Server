@@ -17,6 +17,13 @@ namespace Server
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
+            while (false)
+            {
+                Console.WriteLine(Tangible.CollisionCheck.DistanceFromSegment(
+                    new Tangible.Vector(Console.ReadLine()), new Tangible.Vector(Console.ReadLine()), new Tangible.Vector(Console.ReadLine()),
+                    Convert.ToDouble(Console.ReadLine()), new Tangible.Vector(Console.ReadLine())));
+            }
         }
     }
 }

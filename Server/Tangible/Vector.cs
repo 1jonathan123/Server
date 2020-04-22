@@ -141,6 +141,16 @@ namespace Server.Tangible
             return new Vector(a.x * b, a.y * b);
         }
 
+        public static Vector operator *(double b, Vector a)
+        {
+            return new Vector(a.x * b, a.y * b);
+        }
+
+        public static double operator *(Vector a, Vector b)
+        {
+            return a.x * b.x + a.y * b.y;
+        }
+
         public static Vector operator /(Vector a, double b)
         {
             return new Vector(a.x / b, a.y / b);

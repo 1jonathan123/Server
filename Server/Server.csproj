@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0E6C3D33-A237-48B2-83AC-0B0EA69B3691}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Server</RootNamespace>
     <AssemblyName>Server</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,6 +54,7 @@
     <Compile Include="Arsenal\Bullets\MagicBulletData.cs" />
     <Compile Include="Arsenal\Bullets\SimpleBulletData.cs" />
     <Compile Include="Arsenal\Bullets\VolleyBulletData.cs" />
+    <Compile Include="Arsenal\Shop.cs" />
     <Compile Include="Arsenal\WeaponData.cs" />
     <Compile Include="Entity\Agent.cs" />
     <Compile Include="Entity\AgentActions.cs" />
@@ -67,7 +71,9 @@
     <Compile Include="Priority_Queue\SimplePriorityQueue.cs" />
     <Compile Include="Priority_Queue\StablePriorityQueue.cs" />
     <Compile Include="Priority_Queue\StablePriorityQueueNode.cs" />
+    <Compile Include="Tangible\Circle.cs" />
     <Compile Include="Tangible\IClashAble.cs" />
+    <Compile Include="Tangible\IPrintAble.cs" />
     <Compile Include="Tangible\IShape.cs" />
     <Compile Include="Universe\Block.cs" />
     <Compile Include="Arsenal\IBullet.cs" />

@@ -12,56 +12,72 @@ namespace Server.Universe
 
     class Screen
     {
-        LinkedList<Thing> Things;
+        LinkedList<Thing> things;
         LinkedList<Rect> rects;
+        LinkedList<Circle> circles;
         LinkedList<Text> texts;
 
         Vector POV;
 
         public Screen(Vector POV)
         {
-            Things = new LinkedList<Thing>();
+            things = new LinkedList<Thing>();
             rects = new LinkedList<Rect>();
+            circles = new LinkedList<Circle>();
             texts = new LinkedList<Text>();
 
             this.POV = POV;
         }
 
-        public void Add(Thing obj)
+        public void Add(IPrintAble obj)
         {
-            Things.AddLast(obj);
-        }
+            switch(obj)
+            {
+                case Thing thing:
+                    things.AddLast(thing);
+                    break;
 
-        public void Add(Rect rect)
-        {
-            rects.AddLast(rect);
-        }
+                case Rect rect:
+                    rects.AddLast(rect);
+                    break;
 
-        public void Add(Text text)
-        {
-            texts.AddLast(text);
+                case Circle circle:
+                    circles.AddLast(circle);
+                    break;
+
+                case Text text:
+                    texts.AddLast(text);
+                    break;
+            }
         }
 
         public void GetBytes(Bytes bytes)
         {
-            Bytes ThingsBytes = new Bytes();
+            Bytes thingsBytes = new Bytes();
             Bytes rectsBytes = new Bytes();
+            Bytes circlesBytes = new Bytes();
             Bytes textsBytes = new Bytes();
 
-            foreach (Thing obj in Things)
-                obj.GetBytes(ThingsBytes, POV);
+            foreach (Thing obj in things)
+                obj.GetBytes(thingsBytes, POV);
 
             foreach (Rect rect in rects)
                 rect.GetBytes(rectsBytes, POV);
 
+            foreach (Circle circle in circles)
+                circle.GetBytes(circlesBytes, POV);
+
             foreach (Text text in texts)
                 text.GetBytes(textsBytes, POV);
 
-            bytes.Add(ThingsBytes.Count);
-            bytes.Add(ThingsBytes);
+            bytes.Add(thingsBytes.Count);
+            bytes.Add(thingsBytes);
 
             bytes.Add(rectsBytes.Count);
             bytes.Add(rectsBytes);
+
+            bytes.Add(circlesBytes.Count);
+            bytes.Add(circlesBytes);
 
             bytes.Add(textsBytes.Count);
             bytes.Add(textsBytes);

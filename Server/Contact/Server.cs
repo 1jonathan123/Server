@@ -201,9 +201,6 @@ namespace Server.Contact
                             lock (world)
                                 world.SendMessage(cd.name, b.NextString());
                             break;
-                        default:
-                            Console.WriteLine();
-                            break;
                     }
                 }
             }

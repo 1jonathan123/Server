@@ -7,7 +7,7 @@ namespace Server.Tangible
     /*
      * text to print on a client's screen
      */
-    class Text
+    class Text : IPrintAble
     {
         string text;
         Vector position;

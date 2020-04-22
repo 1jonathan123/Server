@@ -46,7 +46,7 @@ namespace Server.Entity
             {
                 double t = map.Clash(body, movement.Just(i));
 
-                if (t > Constants.Epsilon2)
+                if (t > Constants.Epsilon)
                     body.position += movement.Just(i) * t;
             }
         }
@@ -63,7 +63,7 @@ namespace Server.Entity
 
             body.angle = agentActions.lookDirection.Angle;
 
-            if (map.Clash(body, new Vector()) < Constants.Epsilon2)
+            if (map.Clash(body, new Vector()) < Constants.Epsilon)
                 body.angle = t; //we can't change the angle due to the collision
 
             Vector movement = agentActions.MovementDirection * 2.5 + currentKB; //add speed
@@ -105,7 +105,7 @@ namespace Server.Entity
             bag.Print(screen);
             screen.Add(body);
 
-            double bound = Model.Models[body.modelID].BoundRadius;
+            double bound = Model.Models[body.modelID].BoundRadius * 1.5;
 
             screen.Add(new Text(name, body.position - new Vector(0, bound * 1.2), 24, "white"));
 
@@ -113,7 +113,7 @@ namespace Server.Entity
                 new Vector(bound * 2, bound / 5), "black"));
 
             screen.Add(new Rect(body.position + new Vector(-bound * (1 - hp / maxHp), bound * 1.2),
-                new Vector(bound * 2 * (hp / maxHp), bound / 5), isMate ? "#0000FF" : "#FF0000"));
+                new Vector(bound * 2 * (hp / maxHp), bound / 5), isMate ? "#0000AA" : "#AA0000"));
 
             if (isMe)
             {

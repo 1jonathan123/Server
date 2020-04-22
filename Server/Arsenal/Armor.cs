@@ -9,7 +9,7 @@ namespace Server.Arsenal
     class Armor
     {
         Effect effect; //an armor may give an effect(such as fast, regeneration, ...) 
-        double resistance; //hp -= resistance * damage, when hit
+        double resistance; //hp -= resistance * damage, when being hit
 
         public Armor(Effect effect, double resistance)
         {

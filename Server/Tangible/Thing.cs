@@ -7,7 +7,7 @@ namespace Server.Tangible
     /*
      * thing is an instance of a specific model
     */
-    class Thing : IClashAble
+    class Thing : IClashAble, IPrintAble
     {
         public string modelID;
         public Vector position;
@@ -22,6 +22,9 @@ namespace Server.Tangible
 
         public double Clash(IClashAble another, Vector movement)
         {
+            if (!another.Solid)
+                return 1;
+
             switch (another)
             {
                 case Thing thing:
@@ -29,6 +32,9 @@ namespace Server.Tangible
 
                 case Rect rect:
                     return Model.Models[modelID].Clash(position, angle, rect, movement);
+
+                case Circle circle:
+                    return Model.Models[modelID].Clash(position, angle, circle, movement);
             }
 
             throw new Exception("Type error");
@@ -48,5 +54,7 @@ namespace Server.Tangible
         public double BoundRadius { get { return Model.Models[modelID].BoundRadius; } }
 
         public Vector Position { get { return position; } }
+
+        public bool Solid { get { return true; } }
     }
 }

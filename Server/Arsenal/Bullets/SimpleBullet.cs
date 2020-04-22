@@ -33,14 +33,14 @@ namespace Server.Arsenal.Bullets
 
             double t = map.Clash(body, direction);
 
-            if (t < 1 - Constants.Epsilon2)
+            if (t < 1 - Constants.Epsilon)
             {
                 if (!data.boing)
                     return false;
 
-                if (map.Clash(body, direction.Just(0)) < 1 - Constants.Epsilon2)
+                if (map.Clash(body, direction.Just(0)) < 1 - Constants.Epsilon)
                     direction.x = -direction.x;
-                if (map.Clash(body, direction.Just(1)) < 1 - Constants.Epsilon2)
+                if (map.Clash(body, direction.Just(1)) < 1 - Constants.Epsilon)
                     direction.y = -direction.y;
 
                 body.angle = direction.Angle;
@@ -54,7 +54,7 @@ namespace Server.Arsenal.Bullets
         //returns kb, damage, and isAlive
         public virtual Tuple<Vector, double, bool> Interact(Thing obj)
         {
-            if (body.Clash(obj, direction) < 1 - Constants.Epsilon2)
+            if (body.Clash(obj, direction) < 1 - Constants.Epsilon)
                 return new Tuple<Vector, double, bool>((direction / direction.Length) * data.kb, data.damage, false);
 
             return null;

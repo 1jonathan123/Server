@@ -15,7 +15,7 @@ namespace Server.Universe.Modes
         {
             //these zombies DO NOT blong to the same team so they are NOT friends
 
-            teams.Add(Zombie.GetZombie("knife", new Vector()), "ZOMBIES0");
+            //teams.Add(Zombie.GetZombie("knife", new Vector()), "ZOMBIES0");
             //teams.Add(Zombie.GetZombie("gun", new Vector()), "ZOMBIES1");
         }
 
@@ -39,15 +39,15 @@ namespace Server.Universe.Modes
                 if (player.AgentState['2'] == State.FirstTimeDown && player.money >= 20)
                 {
                     player.money -= 20;
-                    //player.Bag.Primary = Weapon.NiceWeapon;
+                    player.Bag.Primary = Weapon.NiceWeapon;
                 }
 
                 //through grenade
                 if (player.AgentState['3'] == State.FirstTimeDown && player.money >= 30)
                 {
                     player.money -= 30;
-                    player.Bag.Launcher.Launch(new Arsenal.Bullets.Grenade(player.POV, player.LookTo, new Arsenal.Bullets.GrenadeData("bigRedRect", 800, 8,
-                        50, new Arsenal.Bullets.SimpleBulletData("smallRedRect", 500, 5, 20, 20, true)), map));
+                    player.Bag.Launcher.Launch(new Arsenal.Bullets.Grenade(player.POV, player.LookTo, new Arsenal.Bullets.GrenadeData("bigRedCircle", 800, 8,
+                        50, new Arsenal.Bullets.SimpleBulletData("smallRedCircle", 500, 5, 20, 20, true)), map));
                 }
             }
 
