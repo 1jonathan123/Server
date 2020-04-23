@@ -48,6 +48,8 @@ namespace Server.Entity
 
                 if (t > Constants.Epsilon)
                     body.position += movement.Just(i) * t;
+                else
+                    knockBack[i] = -knockBack[i];
             }
         }
 
